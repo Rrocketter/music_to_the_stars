@@ -33,11 +33,14 @@ export const HeroContent = () => {
           className="flex flex-col gap-6 mt-6 text-6xl text-bold text-white max-w-[600px] w-auto h-auto"
         >
           <span>
-            Providing{" "}
+            Turning{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
-              the best
+              data
             </span>{" "}
-            project experience.
+            to {" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
+              music.
+            </span>
           </span>
         </motion.div>
 
@@ -45,8 +48,7 @@ export const HeroContent = () => {
           variants={slideInFromLeft(0.8)}
           className="text-lg text-gray-400 my-5 max-w-[600px]"
         >
-          I&apos;m a Full Stack Software Engineer with experience in Website,
-          Mobile, and Software development. Check out my projects and skills.
+          We allow for people to experience the beauty of the James Web Space Telescope through musical notes. 
         </motion.p>
 
         <motion.a
@@ -62,9 +64,9 @@ export const HeroContent = () => {
         className="w-full h-full flex justify-center items-center"
       >
         <Image
-          src="/hero-bg.svg"
-          alt="work icons"
-          height={650}
+          src='/jwst_first.png'
+          alt="JWST Telescope"
+          height={750}
           width={650}
           draggable={false}
           className="select-none"

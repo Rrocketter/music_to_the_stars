@@ -35,7 +35,7 @@ export const siteConfig: Metadata = {
     "css",
   ] as Array<string>,
   authors: {
-    name: "Rahul, Adihya",
+    name: "Rahul, Adithya",
     url: "https://github.com/rrocketter",
   },
 } as const;
