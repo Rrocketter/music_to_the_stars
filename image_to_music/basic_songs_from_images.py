@@ -256,8 +256,5 @@ print(result)
 catterina_song, catterina_df, _ = result
 
 # Continue with the rest of your code
-wavfile.write('monkey.wav', rate=22050, data=ori_img.astype(np.float32))
+wavfile.write('space_shuttle.wav', rate=22050, data=ori_img.astype(np.float32))
 ipd.Audio(catterina_song, rate=sr)
-
-
-# wavfile.write('catterina_song.wav', rate = 22050, data = catterina_song.astype(np.float32))
