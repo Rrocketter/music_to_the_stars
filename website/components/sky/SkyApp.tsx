@@ -79,7 +79,7 @@ const SkyApp: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen w-full flex flex-col items-center justify-start pt-20 pb-28 px-4">
+    <section className="min-h-screen w-full flex flex-col items-center justify-start pt-20 pb-28 px-4"   id="sky">
       <div className="max-w-7xl w-full space-y-12">
         <div className="text-center space-y-4">
           <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">
