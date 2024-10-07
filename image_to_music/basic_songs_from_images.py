@@ -4,14 +4,12 @@ from matplotlib import cm
 import numpy as np
 import pandas as pd
 import IPython.display as ipd
-from scipy.io import wavfile
 # import librosa
 from midiutil import MIDIFile
 import random
 from pedalboard import Pedalboard, Chorus, Reverb
 from pedalboard.io import AudioFile
-
-
+from scipy.io import wavfile
 
 
 #Define frequencies that make up A-Harmonic Minor Scale
@@ -37,7 +35,6 @@ def hue2freq(h,scale_freqs):
         note = scale_freqs[0]
     
     return note
-
 
 def img2music(img, scale = [220.00, 246.94 ,261.63, 293.66, 329.63, 349.23, 415.30],
               sr = 22050, T = 0.1, nPixels = 60, useOctaves = True, randomPixels = False,
@@ -122,7 +119,6 @@ def img2music(img, scale = [220.00, 246.94 ,261.63, 293.66, 329.63, 349.23, 415.
                                                
     return song, pixels_df, harmony
 
-
 def get_piano_notes():   
     # White keys are in Uppercase and black keys (sharps) are in lowercase
     octave = ['C', 'c', 'D', 'd', 'E', 'F', 'f', 'G', 'g', 'A', 'a', 'B'] 
@@ -141,7 +137,6 @@ def get_sine_wave(frequency, duration, sample_rate=44100, amplitude=4096):
     t = np.linspace(0, duration, int(sample_rate*duration)) # Time axis
     wave = amplitude*np.sin(2*np.pi*frequency*t)
     return wave
-
 
 def makeScale(whichOctave, whichKey, whichScale, makeHarmony = 'U0'):
     
@@ -233,14 +228,11 @@ def makeScale(whichOctave, whichKey, whichScale, makeHarmony = 'U0'):
     return freqs#,harmony
 
 
-
-#space_shuttle
-ori_img = cv2.imread("ronadlo.png")
+ori_img = cv2.imread('spaceshuttle.jpg')
 spaceshuttle = cv2.cvtColor(ori_img, cv2.COLOR_BGR2RGB)
 plt.figure()
 plt.imshow(spaceshuttle)
 plt.grid(False)
-# plt.show()
 
 
 sr=22050
@@ -248,13 +240,10 @@ sr=22050
 catterina_scale = makeScale(4, 'D', 'HARMONIC_MINOR')
 result = img2music(ori_img, catterina_scale, T=0.2, randomPixels=False, useOctaves=True, nPixels=60)
 
-# Step 2: Print the result to see how many values are returned
-print(result)
-
-# Step 3: Adjust the unpacking based on the number of returned values
-# Assuming img2music returns three values
 catterina_song, catterina_df, _ = result
 
-# Continue with the rest of your code
-wavfile.write('soccer.wav', rate=22050, data=ori_img.astype(np.float32))
+catterina_song_int16 = np.int16(catterina_song / np.max(np.abs(catterina_song)) * 32767)  # Normalize and convert to int16
+
+wavfile.write('space_shuttle.wav', rate=sr, data=catterina_song_int16)
+
 ipd.Audio(catterina_song, rate=sr)
