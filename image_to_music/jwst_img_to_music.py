@@ -212,16 +212,13 @@ def generate_chord_progression(image_stats, duration, sample_rate):
     chord_duration = duration / len(progression)
     samples_per_chord = int(sample_rate * chord_duration)
     
-    # Generate each chord in the progression
     for i, chord in enumerate(progression):
         start_idx = i * samples_per_chord
         end_idx = start_idx + samples_per_chord
         
-        # Get chord frequencies and type
         root_freq, chord_type = chord_map[chord]
         frequencies = get_chord_frequencies(root_freq, chord_type)
         
-        # Generate chord tones
         chord_wave = np.zeros(samples_per_chord)
         for freq in frequencies:
             t_chord = np.linspace(0, chord_duration, samples_per_chord, endpoint=False)
@@ -269,21 +266,17 @@ def analyze_image(img_array):
     }
 
 def jwst_image_color_sonification(image_path, duration=30, sample_rate=44100):
-    # Load and analyze image
     img = Image.open(image_path)
     img_array = np.array(img)
     image_stats = analyze_image(img_array)
     params = get_adaptive_parameters(image_stats)
     
-    # Create time array
     t = np.linspace(0, duration, num=duration*sample_rate, endpoint=False)
     
-    # Generate main components
     audio_signal = np.zeros_like(t)
     beat = generate_beat(duration, sample_rate, params['bpm'], image_stats['complexity'])
     chord_progression = generate_chord_progression(image_stats, duration, sample_rate)
     
-    # Process each color channel (previous implementation remains the same)
     for color in ['red', 'green', 'blue']:
         channel_idx = ['red', 'green', 'blue'].index(color)
         channel_data = img_array[:, :, channel_idx] / 255.0
