@@ -28,7 +28,6 @@ numba==0.60.0
 numpy==2.0.2
 opencv-python-headless==4.10.0.84
 pandas==2.2.3
-pedalboard==0.5.9
 Pillow==9.2.0
 pooch==1.8.2
 protobuf==3.20.3
