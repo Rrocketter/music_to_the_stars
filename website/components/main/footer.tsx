@@ -30,7 +30,7 @@ export const Footer = () => {
         </div>
 
         <div className="mb-[20px] text-[15px] text-center">
-          Rahul Gupta, Adihya Choudhary {new Date().getFullYear()}
+          Rahul Gupta, Aditya Choudhary {new Date().getFullYear()}
         </div>
       </div>
     </div>

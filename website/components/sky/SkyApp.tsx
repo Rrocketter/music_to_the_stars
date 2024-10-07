@@ -91,7 +91,7 @@ const SkyApp: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-6">
-          {['skyView', 'fitsFile', 'spaceImage'].map((opt) => (
+          {[ 'fitsFile', 'spaceImage'].map((opt) => (
             <button
               key={opt}
               onClick={() => {
@@ -113,14 +113,14 @@ const SkyApp: React.FC = () => {
 
         {option && (
           <div className="bg-gray-900/60 backdrop-blur-md rounded-2xl p-8 shadow-xl">
-            {option === 'skyView' && (
+            {/* {option === 'skyView' && (
               <div className="h-[600px] w-full rounded-xl overflow-hidden">
                 <SkyMap
                   imageUrl="/jwst.webp"
                   onRegionSelect={handleRegionSelect}
                 />
               </div>
-            )}
+            )} */}
 
             {(option === 'fitsFile' || option === 'spaceImage') && (
               <div className="space-y-8">
