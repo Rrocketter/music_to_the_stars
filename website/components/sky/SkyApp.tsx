@@ -10,7 +10,6 @@ const SkyMap = dynamic(() => import('./SkyMap'), {
   loading: () => <p>Loading map...</p>
 });
 
-// Sample data (replace with actual samples)
 const sampleFits = [
   { id: 1, name: "Sample FITS 1", url: "/path/to/sample1.fits" },
   { id: 2, name: "Sample FITS 2", url: "/path/to/sample2.fits" },
@@ -21,10 +20,10 @@ const sampleFits = [
 
 const sampleImages = [
   { id: 1, name: "Sample Image 1", url: "/jwst/1.jpg" },
-  { id: 2, name: "Sample Image 2", url: "/jwst/2.jpg"  },
-  { id: 3, name: "Sample Image 3", url: "/jwst/3.jpg"  },
-  { id: 4, name: "Sample Image 4", url: "/jwst/4.jpg"  },
-  { id: 5, name: "Sample Image 5", url: "/jwst/5.jpg"  },
+  { id: 2, name: "Sample Image 2", url: "/jwst/2.jpg" },
+  { id: 3, name: "Sample Image 3", url: "/jwst/3.jpg" },
+  { id: 4, name: "Sample Image 4", url: "/jwst/4.jpg" },
+  { id: 5, name: "Sample Image 5", url: "/jwst/5.png" },
 ];
 
 const SkyApp: React.FC = () => {
@@ -117,7 +116,7 @@ const SkyApp: React.FC = () => {
             {option === 'skyView' && (
               <div className="h-[600px] w-full rounded-xl overflow-hidden">
                 <SkyMap
-                  imageUrl="/path/to/your/jwst-image.jpg"
+                  imageUrl="/jwst.webp"
                   onRegionSelect={handleRegionSelect}
                 />
               </div>
