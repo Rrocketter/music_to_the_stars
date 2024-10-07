@@ -177,15 +177,6 @@ const SkyApp: React.FC = () => {
 
         {option && (
           <div className="bg-gray-900/60 backdrop-blur-md rounded-2xl p-8 shadow-xl">
-            {/* {option === 'skyView' && (
-              <div className="h-[600px] w-full rounded-xl overflow-hidden">
-                <SkyMap
-                  imageUrl="/jwst.webp"
-                  onRegionSelect={handleRegionSelect}
-                />
-              </div>
-            )} */}
-
             {option === 'fitsFile' && (
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -230,7 +221,7 @@ const SkyApp: React.FC = () => {
 
             {option === 'spaceImage' && (
               <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                   {sampleImages.map((sample) => (
                     <div
                       key={sample.id}

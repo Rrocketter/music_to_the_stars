@@ -1,5 +1,4 @@
 // import React from 'react';
-// import { GlassMagnifier } from 'react-image-magnifiers';
 // import ImageZoom from 'react-image-zoom';
 
 // const ImageViewer = () => {
