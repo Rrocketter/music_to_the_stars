@@ -9,6 +9,7 @@ import { siteConfig } from "@/config";
 import { cn } from "@/lib/utils";
 
 import "./globals.css";
+import 'leaflet/dist/leaflet.css';
 
 const inter = Inter({ subsets: ["latin"] });
 

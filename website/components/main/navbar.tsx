@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { LINKS, NAV_LINKS } from "@/constants";
+import { NAV_LINKS, SOCIALS } from "@/constants";
 
 export const Navbar = () => {
   return (
@@ -35,20 +35,11 @@ export const Navbar = () => {
                 {link.title}
               </Link>
             ))}
-
-            {/* source code */}
-            <Link
-              href={LINKS.sourceCode}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="cursor-pointer hover:text-[rgb(112,66,248)] transition"
-            >
-              Source Code
-            </Link>
+            
           </div>
         </div>
 
-        {/* <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-5">
           {SOCIALS.map(({ link, name, icon: Icon }) => (
             <Link
               href={link}
@@ -56,10 +47,10 @@ export const Navbar = () => {
               rel="noreferrer noopener"
               key={name}
             >
-              <Icon className="h-6 w-6 text-white" />
+              <Icon className="h-8 w-8 text-white" />
             </Link>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );

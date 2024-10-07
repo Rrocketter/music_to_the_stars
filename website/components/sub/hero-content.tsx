@@ -24,7 +24,7 @@ export const HeroContent = () => {
         >
           <SparklesIcon className="text-[#b49bff] mr-[10px] h-5 w-5" />
           <h1 className="Welcome-text text-[13px]">
-            SpaceApps 2024 Music Submission
+            SpaceApps 2024
           </h1>
         </motion.div>
 
@@ -33,14 +33,11 @@ export const HeroContent = () => {
           className="flex flex-col gap-6 mt-6 text-6xl text-bold text-white max-w-[600px] w-auto h-auto"
         >
           <span>
-            Turning{" "}
+            Providing{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
-              data
+              a musical
             </span>{" "}
-            to {" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
-              music.
-            </span>
+            experience.
           </span>
         </motion.div>
 
@@ -48,7 +45,8 @@ export const HeroContent = () => {
           variants={slideInFromLeft(0.8)}
           className="text-lg text-gray-400 my-5 max-w-[600px]"
         >
-          We allow for people to experience the beauty of the James Web Space Telescope through musical notes. 
+          We are a team of developers who are passionate about spreading astronomy to the masses.
+          Through music, we hope that more people than ever before can appreciate the beauty of the cosmos.
         </motion.p>
 
         <motion.a
@@ -64,9 +62,9 @@ export const HeroContent = () => {
         className="w-full h-full flex justify-center items-center"
       >
         <Image
-          src='/jwst_first.png'
-          alt="JWST Telescope"
-          height={750}
+          src="/jwst_first.png"
+          alt="JWST"
+          height={650}
           width={650}
           draggable={false}
           className="select-none"
