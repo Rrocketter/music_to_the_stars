@@ -9,18 +9,6 @@ export const SKILL_DATA = [
     },
 ] as const;
 
-export const FOOTER_DATA = [
-  {
-    title: "SpaceApp 2024",
-    data: [
-            {
-              // name: "",
-              // icon: FaYoutube,
-              link: "https://youtube.com",
-            },
-          ]
-  }
-]
 
 export const NAV_LINKS = [
   {
