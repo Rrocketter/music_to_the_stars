@@ -40,24 +40,40 @@ const SkyMap: React.FC<SkyMapProps> = ({ imageUrl, onRegionSelect }) => {
         }
       },
     });
-
     return null;
   };
 
   const MapAdjuster = () => {
     const map = useMap();
+    
     useEffect(() => {
+      // Initial map setup
       map.fitBounds(imageBounds);
+      
+      // Disable drag and set zoom constraints
+      map.dragging.disable();
+      map.setMinZoom(1);
+      map.setMaxZoom(4);
+      
+      // Prevent the map from being moved outside the image bounds
+      map.setMaxBounds(imageBounds.pad(0.1)); // Add 10% padding to prevent white edges
     }, [map, imageBounds]);
+
     return null;
   };
 
   return (
     <MapContainer
       center={[0, 0]}
-      zoom={0}
+      zoom={1}
       style={{ height: '100vh', width: '100%' }}
       crs={L.CRS.Simple}
+      zoomControl={true}
+      dragging={false}
+      minZoom={1}
+      maxZoom={4}
+      maxBounds={imageBounds}
+      maxBoundsViscosity={1.0}
     >
       <ImageOverlay
         url={imageUrl}
