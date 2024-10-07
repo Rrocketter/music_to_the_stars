@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import L from 'leaflet';
 import Image from 'next/image';
@@ -10,20 +10,28 @@ const SkyMap = dynamic(() => import('./SkyMap'), {
   loading: () => <p>Loading map...</p>
 });
 
-const sampleFits = [
-  { id: 1, name: "Sample FITS 1", url: "/path/to/sample1.fits" },
-  { id: 2, name: "Sample FITS 2", url: "/path/to/sample2.fits" },
-  { id: 3, name: "Sample FITS 3", url: "/path/to/sample3.fits" },
-  { id: 4, name: "Sample FITS 4", url: "/path/to/sample4.fits" },
-  { id: 5, name: "Sample FITS 5", url: "/path/to/sample5.fits" },
+const sampleImages = [
+  { id: 1, name: "Sample Image 1", url: "/jwst/1.jpg", sound: "/images/1.wav" },
+  { id: 2, name: "Sample Image 2", url: "/jwst/2.jpg", sound: "/images/2.wav" },
+  { id: 3, name: "Sample Image 3", url: "/jwst/3.jpg", sound: "/images/3.wav" },
+  { id: 4, name: "Sample Image 4", url: "/jwst/4.jpg", sound: "/images/4.wav" },
+  { id: 5, name: "Sample Image 5", url: "/jwst/5.png", sound: "/images/5.wav" },
 ];
 
-const sampleImages = [
-  { id: 1, name: "Sample Image 1", url: "/jwst/1.jpg" },
-  { id: 2, name: "Sample Image 2", url: "/jwst/2.jpg" },
-  { id: 3, name: "Sample Image 3", url: "/jwst/3.jpg" },
-  { id: 4, name: "Sample Image 4", url: "/jwst/4.jpg" },
-  { id: 5, name: "Sample Image 5", url: "/jwst/5.png" },
+const randomSounds = [
+  "/random/1.wav",
+  "/random/2.wav",
+  "/random/3.wav",
+  "/random/4.wav",
+"/random/5.wav",
+"/random/6.wav",
+"/random/7.wav",
+];
+
+const sampleFitsFiles = [
+  { id: 1, name: "Sample DATA FITS 1", sound: "/fits/1.wav" },
+  { id: 2, name: "Sample DATA FITS 2", sound: "/fits/2.wav" },
+  { id: 3, name: "Sample DATA FITS 3", sound: "/fits/3.wav" },
 ];
 
 const SkyApp: React.FC = () => {
@@ -33,32 +41,21 @@ const SkyApp: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null); // Reference to control audio
 
-  const handleRegionSelect = async (bounds: L.LatLngBounds) => {
-    try {
-      const response = await fetch('/api/convert-to-music', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          southWest: bounds.getSouthWest(),
-          northEast: bounds.getNorthEast(),
-        }),
-      });
+  // State for audio playback
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
-      if (!response.ok) throw new Error('Failed to convert image to music');
-      const musicUrl = await response.text();
-      setMusicUrl(musicUrl);
-    } catch (error) {
-      console.error('Error converting image to music:', error);
-      setErrorMessage('Failed to convert region to music. Please try again.');
-    }
+  const handleRegionSelect = (bounds: L.LatLngBounds) => {
+    const randomSound = randomSounds[Math.floor(Math.random() * randomSounds.length)];
+    playNewAudio(randomSound);
   };
 
-  const handleSampleSelect = async (url: string) => {
+  const handleSampleSelect = (url: string, sound: string) => {
     setSelectedSample(url);
-    setMusicUrl('/path/to/sample-music.wav');
+    playNewAudio(sound);  // Ensure the selected sound is played
     setErrorMessage('');
   };
 
@@ -75,7 +72,74 @@ const SkyApp: React.FC = () => {
 
     setUploadedFile(file);
     setErrorMessage('');
-    setMusicUrl('/path/to/uploaded-music.wav');
+    
+    // Assign a random sound from the list for both image and FITS file uploads
+    const randomSound = randomSounds[Math.floor(Math.random() * randomSounds.length)];
+    playNewAudio(randomSound); // Play a sound when a new file is uploaded
+  };
+
+  const playNewAudio = (audioUrl: string) => {
+    // Stop any current audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    // Set and play the new audio
+    setMusicUrl(audioUrl);
+    setIsPlaying(true); // Set to playing when audio is loaded
+  };
+
+  useEffect(() => {
+    // Play the new audio if there's an updated musicUrl
+    if (musicUrl && audioRef.current) {
+      audioRef.current.play();
+    }
+  }, [musicUrl]);
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+
+    if (audioElement) {
+      const handleTimeUpdate = () => {
+        setCurrentTime(audioElement.currentTime);
+        setDuration(audioElement.duration);
+      };
+
+      audioElement.addEventListener('timeupdate', handleTimeUpdate);
+
+      return () => {
+        audioElement.removeEventListener('timeupdate', handleTimeUpdate);
+      };
+    }
+  }, [musicUrl]);
+
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Number(event.target.value);
+    }
+  };
+
+  const downloadAudio = () => {
+    if (musicUrl) {
+      const link = document.createElement('a');
+      link.href = musicUrl;
+      link.download = musicUrl.split('/').pop() || 'audio.wav';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
@@ -106,7 +170,7 @@ const SkyApp: React.FC = () => {
               }`}
             >
               {opt === 'skyView' ? 'JWST Sky View' : 
-               opt === 'fitsFile' ? 'JWST Fits File' : 'JWST Space Image'}
+               opt === 'fitsFile' ? 'JWST FITS File' : 'JWST Space Image'}
             </button>
           ))}
         </div>
@@ -122,32 +186,19 @@ const SkyApp: React.FC = () => {
               </div>
             )} */}
 
-            {(option === 'fitsFile' || option === 'spaceImage') && (
+            {option === 'fitsFile' && (
               <div className="space-y-8">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {(option === 'fitsFile' ? sampleFits : sampleImages).map((sample) => (
-                    option === 'spaceImage' ? (
-                      <div
-                        key={sample.id}
-                        className="aspect-square relative rounded-lg overflow-hidden cursor-pointer group"
-                        onClick={() => handleSampleSelect(sample.url)}
-                      >
-                        <Image
-                          src={sample.url}
-                          alt={sample.name}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {sampleFitsFiles.map((fits) => (
+                    <div
+                      key={fits.id}
+                      className="aspect-square relative rounded-lg overflow-hidden cursor-pointer group"
+                      onClick={() => handleSampleSelect("", fits.sound)}
+                    >
+                      <div className="flex justify-center items-center h-full bg-gray-800 text-white">
+                        {fits.name}
                       </div>
-                    ) : (
-                      <button
-                        key={sample.id}
-                        onClick={() => handleSampleSelect(sample.url)}
-                        className="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors duration-300"
-                      >
-                        {sample.name}
-                      </button>
-                    )
+                    </div>
                   ))}
                 </div>
 
@@ -156,7 +207,7 @@ const SkyApp: React.FC = () => {
                     onClick={() => fileInputRef.current?.click()}
                     className="px-8 py-4 bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity"
                   >
-                    Upload {option === 'fitsFile' ? 'FITS File' : 'Space Image'}
+                    Upload FITS File
                   </button>
                   <input
                     ref={fileInputRef}
@@ -170,51 +221,75 @@ const SkyApp: React.FC = () => {
                   )}
                   {uploadedFile && (
                     <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-                      <p className="text-green-400">
-                        Uploaded: {uploadedFile.name}
-                      </p>
-                      {option === 'spaceImage' && (
-                        <div className="mt-4 max-w-md mx-auto">
-                          <Image
-                            src={URL.createObjectURL(uploadedFile)}
-                            alt="Uploaded image"
-                            width={400}
-                            height={400}
-                            className="rounded-lg"
-                          />
-                        </div>
-                      )}
+                      <p className="text-white">{uploadedFile.name}</p>
                     </div>
                   )}
                 </div>
               </div>
             )}
 
-            {musicUrl && (
-              <div className="mt-8 space-y-4">
-                <audio
-                  controls
-                  src={musicUrl}
-                  className="w-full h-12 rounded-lg"
-                >
-                  Your browser does not support the audio element.
-                </audio>
-                <div className="flex justify-center">
-                  <a
-                    href={musicUrl}
-                    download="space-music.wav"
-                    className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl text-white font-semibold hover:opacity-90 transition-opacity"
-                  >
-                    Download WAV
-                  </a>
+            {option === 'spaceImage' && (
+              <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {sampleImages.map((sample) => (
+                    <div
+                      key={sample.id}
+                      className="aspect-square relative rounded-lg overflow-hidden cursor-pointer group"
+                      onClick={() => handleSampleSelect(sample.url, sample.sound)}
+                    >
+                      <Image
+                        src={sample.url}
+                        alt={sample.name}
+                        layout="fill"
+                        className="object-cover transition-transform duration-300 transform group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 flex justify-center items-center bg-black/30 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        {sample.name}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
+
+            <div className="flex flex-col items-center mt-8">
+              <audio
+                ref={audioRef}
+                src={musicUrl || ""}
+                onEnded={() => setIsPlaying(false)}
+                preload="metadata"
+              />
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={handlePlayPause}
+                  className={`px-4 py-2 rounded-md text-white ${isPlaying ? 'bg-red-500' : 'bg-green-500'}`}
+                >
+                  {isPlaying ? 'Pause' : 'Play'}
+                </button>
+                <div className="flex items-center">
+                  <input
+                    type="range"
+                    min={0}
+                    max={duration}
+                    value={currentTime}
+                    onChange={handleSliderChange}
+                    className="w-32"
+                  />
+                  <span className="text-white">{Math.floor(currentTime)} / {Math.floor(duration)}</span>
+                </div>
+              </div>
+              {musicUrl && (
+                <button
+                  onClick={downloadAudio}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                  Download Audio
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
-
-     
     </section>
   );
 };
