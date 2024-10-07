@@ -5,11 +5,6 @@ import dynamic from 'next/dynamic';
 import L from 'leaflet';
 import Image from 'next/image';
 
-const SkyMap = dynamic(() => import('./SkyMap'), {
-  ssr: false,
-  loading: () => <p>Loading map...</p>
-});
-
 const sampleImages = [
   { id: 1, name: "Sample Image 1", url: "/jwst/1.jpg", sound: "/images/1.wav" },
   { id: 2, name: "Sample Image 2", url: "/jwst/2.jpg", sound: "/images/2.wav" },
