@@ -235,7 +235,7 @@ def makeScale(whichOctave, whichKey, whichScale, makeHarmony = 'U0'):
 
 
 #space_shuttle
-ori_img = cv2.imread('spaceshuttle.jpg')
+ori_img = cv2.imread("ronadlo.png")
 spaceshuttle = cv2.cvtColor(ori_img, cv2.COLOR_BGR2RGB)
 plt.figure()
 plt.imshow(spaceshuttle)
@@ -256,5 +256,5 @@ print(result)
 catterina_song, catterina_df, _ = result
 
 # Continue with the rest of your code
-wavfile.write('space_shuttle.wav', rate=22050, data=ori_img.astype(np.float32))
+wavfile.write('soccer.wav', rate=22050, data=ori_img.astype(np.float32))
 ipd.Audio(catterina_song, rate=sr)
