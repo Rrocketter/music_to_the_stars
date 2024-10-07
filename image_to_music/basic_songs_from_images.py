@@ -228,7 +228,7 @@ def makeScale(whichOctave, whichKey, whichScale, makeHarmony = 'U0'):
     return freqs#,harmony
 
 
-ori_img = cv2.imread('spaceshuttle.jpg')
+ori_img = cv2.imread('ronadlo.png')
 spaceshuttle = cv2.cvtColor(ori_img, cv2.COLOR_BGR2RGB)
 plt.figure()
 plt.imshow(spaceshuttle)
@@ -244,6 +244,6 @@ catterina_song, catterina_df, _ = result
 
 catterina_song_int16 = np.int16(catterina_song / np.max(np.abs(catterina_song)) * 32767)  # Normalize and convert to int16
 
-wavfile.write('space_shuttle.wav', rate=sr, data=catterina_song_int16)
+wavfile.write('soccer.wav', rate=sr, data=catterina_song_int16)
 
 ipd.Audio(catterina_song, rate=sr)

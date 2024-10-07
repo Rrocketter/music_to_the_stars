@@ -55,7 +55,7 @@ def jwst_image_color_sonification(image_path, duration=30, sample_rate=44100):
     return audio_signal, sample_rate
 
 # Example usage
-image_path = 'path_to_your_jwst_image.jpg'
+image_path = 'ronadlo.png'
 audio, sr = jwst_image_color_sonification(image_path)
 
 # Save as WAV file
